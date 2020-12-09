@@ -1,0 +1,51 @@
+service: dev-secret
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+plugins:
+  - serverless-offline
+
+functions:
+  #criar amigo secreto
+  create: 
+    handler: src/handlers/secrets.create
+    events:
+      - http:
+          path: /secret/
+          method: post
+          cors: true
+  #listar participante
+  get:
+    handler: src/handlers/secrets.get
+    events:
+      - http:
+          path: /secret/{id}
+          method: get
+          cors: true
+  #sortear participante
+  draw:
+    handler: src/handlers/secrets.draw
+    events:
+      - http:
+          path: /secret/{id}/draw
+          method: put
+          cors: true
+  #adicionar participante
+  createParticipant:
+    handler: src/handlers/participants.create
+    events:
+      - http:
+          path: /secret/{id}/participants
+          method: post
+          cors: true
+  #deletar participante
+  deleteParticipant:
+    handler: src/handlers/participants.delete
+    events:
+      - http:
+          path: /secret/{id}/participants/{participantId}
+          method: delete
+          cors: true          
